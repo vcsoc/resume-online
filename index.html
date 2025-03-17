@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <title>Chris' Resume Timeline</title>
+    <script src="lib/chart.min.js"></script>
+    <script>
+      if (typeof Chart === "undefined") {
+        console.error("Chart.js failed to load from local file.");
+      } else {
+        console.log("Chart.js loaded successfully from local file");
+      }
+    </script>
+    <script src="lib/js-yaml.min.js"></script>
+    <script src="lib/jspdf.umd.min.js"></script>
+    <style>
+      /* [Existing CSS remains unchanged] */
+      body {
+        font-family: "Poppins", "Arial", sans-serif;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.3s, color 0.3s;
+        overflow-x: hidden;
+
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE/Edge */
+        user-select: none; /* Standard */
+      }
+
+      body.light-theme {
+        background-color: #f5f5e6;
+        color: #4a3f35;
+      }
+
+      body.dark-theme {
+        background-color: #1a1a1a;
+        color: #d4d4d4;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 2.5em;
+        font-weight: 700;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        animation: fadeInDown 1s ease;
+      }
+
+      body.light-theme h1 {
+        color: #8a9a5b;
+      }
+
+      body.dark-theme h1 {
+        color: #5a9bd4;
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .personal-details-container {
+        display: flex;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto 40px;
+        padding: 0 20px;
+      }
+
+      .personal-details {
+        max-width: 45%;
+        padding: 0 20px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-theme .personal-details a {
+        color: #123bab;
+      }
+
+      body.dark-theme .personal-details a {
+        color: #387fe3;
+      }
+
+      .introduction {
+        max-width: 45%;
+        padding: 0 20px 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-theme .personal-details,
+      body.light-theme .introduction {
+        background-color: #fffdf5;
+        border: 1px solid #d4d4aa;
+        width: 45%;
+      }
+
+      body.dark-theme .personal-details,
+      body.dark-theme .introduction {
+        background-color: #282828;
+        border: 1px solid #3a3a3a;
+        width: 45%;
+      }
+
+      .personal-details h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        justify-self: left;
+      }
+
+      body.light-theme .personal-details h2 {
+        color: #8a9a5b;
+      }
+
+      body.dark-theme .personal-details h2 {
+        color: #5a9bd4;
+      }
+
+      .introduction h2 {
+        font-size: 1.8em;
+        margin-bottom: 15px;
+        justify-self: left;
+      }
+
+      body.light-theme .introduction h2 {
+        color: #8a9a5b;
+      }
+
+      body.dark-theme .introduction h2 {
+        color: #5a9bd4;
+      }
+
+      .personal-details p {
+        margin: 5px 0;
+        font-size: 1.1em;
+      }
+      .introduction p {
+        margin: 5px 0;
+        font-size: 1.1em;
+      }
+
+      /* ********************************************************************************** EDUCATION / SKILLS */
+      .education-section {
+        margin-bottom: 40px;
+      }
+
+      .education-section h2 {
+        text-align: center;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+      }
+
+      body.light-theme .education-section h2 {
+        color: #8a9a5b;
+      }
+
+      body.dark-theme .education-section h2 {
+        color: #5a9bd4;
+      }
+
+      .education-tabs-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .education-tabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .education-tab {
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: 500;
+        text-align: center;
+        transition: background-color 0.3s, color 0.3s, transform 0.3s;
+      }
+
+      body.light-theme .education-tab {
+        background-color: #fffdf5;
+        color: #4a3f35;
+        border: 1px solid #d4d4aa;
+      }
+
+      body.dark-theme .education-tab {
+        background-color: #282828;
+        color: #d4d4d4;
+        border: 1px solid #3a3a3a;
+      }
+
+      .education-tab.active {
+        font-weight: 700;
+      }
+
+      body.light-theme .education-tab.active {
+        background-color: #8a9a5b;
+        color: #fffdf5;
+      }
+
+      body.dark-theme .education-tab.active {
+        background-color: #5a9bd4;
+        color: #1a1a1a;
+      }
+
+      .education-tab:hover {
+        transform: translateY(-2px);
+      }
+
+      body.light-theme .education-tab:hover {
+        background-color: #a8b77d;
+      }
+
+      body.dark-theme .education-tab:hover {
+        background-color: #7ab9e4;
+      }
+
+      .education-content {
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
+
+      body.light-theme .education-content {
+        background-color: #fffdf5;
+        border: 1px solid #d4d4aa;
+      }
+
+      body.dark-theme .education-content {
+        background-color: #282828;
+        border: 1px solid #3a3a3a;
+      }
+
+      .education-content h3 {
+        margin-top: 0;
+        font-size: 1.2em;
+      }
+
+      body.light-theme .education-content h3 {
+        color: #4a3f35;
+      }
+
+      body.dark-theme .education-content h3 {
+        color: #d4d4d4;
+      }
+
+      .education-content p {
+        margin: 5px 0;
+        font-size: 1em;
+      }
+
+      .education-subtabs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .education-subcontent {
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-theme .education-subcontent {
+        background-color: #fffdf5;
+        border: 1px solid #d4d4aa;
+      }
+
+      body.dark-theme .education-subcontent {
+        background-color: #282828;
+        border: 1px solid #3a3a3a;
+      }
+
+      #consolidatedSkillsChart {
+        min-height: 350px;
+        max-height: 400px;
+        width: 100%;
+      }
+
+      /* **************************************************************************************** */
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+      }
+
+      #searchInput {
+        padding: 12px 20px;
+        width: 300px;
+        border-radius: 25px;
+        font-size: 1em;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        outline: none;
+      }
+
+      body.light-theme #searchInput {
+        border: 2px solid #8a9a5b;
+        background-color: #fffdf5;
+        color: #4a3f35;
+      }
+
+      body.dark-theme #searchInput {
+        border: 2px solid #5a9bd4;
+        background-color: #282828;
+        color: #d4d4d4;
+      }
+
+      #searchInput:focus {
+        box-shadow: 0 0 10px rgba(90, 155, 212, 0.5);
+      }
+
+      body.light-theme #searchInput:focus {
+        border-color: #8a9a5b;
+      }
+
+      body.dark-theme #searchInput:focus {
+        border-color: #5a9bd4;
+      }
+
+      #downloadBtn {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s, transform 0.3s;
+        color: white;
+      }
+
+      body.light-theme #downloadBtn {
+        background-color: #8a9a5b;
+        box-shadow: 0 4px 15px rgba(138, 154, 91, 0.3);
+      }
+
+      body.dark-theme #downloadBtn {
+        background-color: #5a9bd4;
+        box-shadow: 0 4px 15px rgba(90, 155, 212, 0.3);
+      }
+
+      #downloadBtn:hover {
+        transform: translateY(-2px);
+      }
+
+      body.light-theme #downloadBtn:hover {
+        background-color: #7a8a4b;
+      }
+
+      body.dark-theme #downloadBtn:hover {
+        background-color: #4a8bc4;
+      }
+
+      .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 100;
+      }
+
+      #themeSwitch {
+        background: none;
+        border: none;
+        font-size: 28px;
+        cursor: pointer;
+        padding: 8px;
+        transition: transform 0.3s, color 0.3s;
+      }
+
+      body.light-theme #themeSwitch {
+        color: #8a9a5b;
+      }
+
+      body.dark-theme #themeSwitch {
+        color: #5a9bd4;
+      }
+
+      #themeSwitch:hover {
+        transform: scale(1.2);
+      }
+
+      body.light-theme #themeSwitch:hover {
+        color: #7a8a4b;
+      }
+
+      body.dark-theme #themeSwitch:hover {
+        color: #4a8bc4;
+      }
+
+      .timeline {
+        position: relative;
+        margin: 0 auto;
+        padding: 10px 0 40px;
+        width: 100%;
+      }
+
+      .timeline::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 6px;
+        transform: translateX(-50%);
+        transition: height 0.5s ease;
+        border-radius: 3px;
+      }
+
+      body.light-theme .timeline::before {
+        background: linear-gradient(to bottom, #8a9a5b, #a8b77d);
+      }
+
+      body.dark-theme .timeline::before {
+        background: linear-gradient(to bottom, #5a9bd4, #7ab9e4);
+      }
+
+      .reset-filter-container {
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 30;
+        margin: -10px 0 0 5px;
+      }
+
+      .reset-filter-btn {
+        display: none; /* Hidden by default */
+        padding: 15px 20px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s, transform 0.3s;
+        color: white;
+        font-size: 24px;
+      }
+
+      body.light-theme .reset-filter-btn {
+        background-color: #e07a5f;
+        box-shadow: 0 2px 10px rgba(224, 122, 95, 0.3);
+      }
+
+      body.dark-theme .reset-filter-btn {
+        background-color: #ad962d;
+        box-shadow: 0 2px 10px rgba(244, 162, 97, 0.3);
+      }
+
+      .reset-filter-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      body.light-theme .reset-filter-btn:hover {
+        background-color: #d45d3f;
+      }
+
+      body.dark-theme .reset-filter-btn:hover {
+        background-color: #e48c43;
+      }
+
+      .reset-filter-btn.visible {
+        display: inline-block; /* Shown when filter is active */
+      }
+
+      .timeline-entries {
+        position: relative;
+      }
+
+      .timeline-entry {
+        position: relative;
+        margin: 60px 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.6s ease forwards 0.2s;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .marker {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        position: relative;
+        z-index: 1;
+        cursor: pointer;
+        transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+      }
+
+      body.light-theme .marker {
+        background-color: #8a9a5b;
+        border: 4px solid #f5f5e6;
+        box-shadow: 0 2px 10px rgba(138, 154, 91, 0.4);
+      }
+
+      body.dark-theme .marker {
+        background-color: #5a9bd4;
+        border: 4px solid #1a1a1a;
+        box-shadow: 0 2px 10px rgba(90, 155, 212, 0.4);
+      }
+
+      .marker:hover,
+      .marker:focus {
+        transform: scale(1.4);
+      }
+
+      body.light-theme .marker:hover,
+      body.light-theme .marker:focus {
+        box-shadow: 0 0 15px rgba(138, 154, 91, 0.6);
+      }
+
+      body.dark-theme .marker:hover,
+      body.dark-theme .marker:focus {
+        box-shadow: 0 0 15px rgba(90, 155, 212, 0.6);
+      }
+
+      .marker.active {
+        transform: scale(1.6);
+      }
+
+      body.light-theme .marker.active {
+        background-color: #e07a5f;
+      }
+
+      body.dark-theme .marker.active {
+        background-color: #f4a261;
+      }
+
+      .marker-label {
+        position: absolute;
+        left: calc(50% + 40px);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-size: 1em;
+        white-space: nowrap;
+        font-weight: 500;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      body.light-theme .marker-label {
+        background-color: #fffdf5;
+        color: #4a3f35;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-theme .marker-label {
+        background-color: #282828;
+        color: #d4d4d4;
+      }
+
+      .tooltip {
+        position: absolute;
+        padding: 12px 18px;
+        border-radius: 15px;
+        font-size: 1.1em;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 10;
+        white-space: nowrap;
+        font-weight: 500;
+      }
+
+      body.light-theme .tooltip {
+        background-color: #fffdf5;
+        color: #4a3f35;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      body.dark-theme .tooltip {
+        background-color: #282828;
+        color: #d4d4d4;
+      }
+
+      .marker:hover .tooltip,
+      .marker:focus .tooltip {
+        opacity: 1;
+      }
+      /* ****************************************************************************************** TIMELINE POPUP */
+      .details-panel {
+        position: fixed;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        width: 42%;
+        max-width: 42%;
+        min-width: 300px;
+        max-height: 80vh;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        padding: 25px;
+        overflow-y: auto;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        z-index: 100;
+      }
+
+      body.light-theme .details-panel {
+        background-color: rgba(255, 255, 240, 0.95);
+      }
+
+      body.dark-theme .details-panel {
+        background-color: rgba(40, 40, 40, 0.95);
+      }
+
+      .details-panel.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%);
+      }
+
+      .details-content h2 {
+        margin-top: 0;
+        font-size: 1.8em;
+        border-bottom: 2px solid;
+        padding-bottom: 5px;
+      }
+
+      body.light-theme .details-content h2 {
+        color: #8a9a5b;
+        border-bottom-color: #8a9a5b;
+      }
+
+      body.dark-theme .details-content h2 {
+        color: #5a9bd4;
+        border-bottom-color: #5a9bd4;
+      }
+
+      .details-content p,
+      .details-content ul {
+        margin: 15px 0;
+        line-height: 1.8;
+      }
+
+      body.light-theme .details-content p,
+      body.light-theme .details-content ul {
+        color: #4a3f35;
+      }
+
+      body.dark-theme .details-content p,
+      body.dark-theme .details-content ul {
+        color: #d4d4d4;
+      }
+
+      .details-content ul {
+        padding-left: 25px;
+      }
+
+      .details-content ul ul {
+        padding-left: 30px;
+        list-style-type: disc;
+      }
+
+      .skill-tag {
+        display: inline-block;
+        color: white;
+        padding: 6px 12px;
+        margin: 5px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.3s;
+        font-size: 0.9em;
+        font-weight: 500;
+      }
+
+      body.light-theme .skill-tag {
+        background-color: #8a9a5b;
+      }
+
+      body.dark-theme .skill-tag {
+        background-color: #004e93;
+      }
+
+      .skill-tag:hover,
+      .skill-tag:focus {
+        transform: translateY(-2px);
+      }
+
+      body.light-theme .skill-tag:hover,
+      body.light-theme .skill-tag:focus {
+        background-color: #7a8a4b;
+      }
+
+      body.dark-theme .skill-tag:hover,
+      body.dark-theme .skill-tag:focus {
+        background-color: #4a8bc4;
+      }
+
+      #skillsChart {
+        margin-top: 20px;
+        max-height: 250px;
+        width: 100%;
+      }
+
+      .close-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: background-color 0.3s, transform 0.3s;
+        color: white;
+        font-size: 1em;
+        margin-top: 15px;
+        width: 100%;
+        max-width: 150px;
+        align-self: center;
+      }
+
+      body.light-theme .close-button {
+        background-color: #e07a5f;
+        box-shadow: 0 2px 10px rgba(224, 122, 95, 0.3);
+      }
+
+      body.dark-theme .close-button {
+        background-color: #ad962d;
+        box-shadow: 0 2px 10px rgba(173, 150, 45, 0.3);
+      }
+
+      .close-button:hover {
+        transform: translateY(-2px);
+      }
+
+      body.light-theme .close-button:hover {
+        background-color: #d45d3f;
+      }
+
+      body.dark-theme .close-button:hover {
+        background-color: #e48c43;
+      }
+
+      /* ****************************************************************************************** @MEDIA */
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 20px 15px;
+        }
+
+        h1 {
+          font-size: 1.8em;
+        }
+
+        .personal-details {
+          max-width: 100%;
+          padding: 15px;
+        }
+
+        .education-section {
+          margin-bottom: 20px;
+        }
+
+        .education-tabs-container {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .education-tabs {
+          width: 100%;
+          flex-direction: row;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 8px;
+        }
+
+        .education-tab {
+          flex: 1;
+          min-width: 80px;
+          padding: 8px 12px;
+          font-size: 0.9em;
+        }
+
+        .education-content {
+          padding: 10px;
+        }
+
+        .education-content h3 {
+          font-size: 1.1em;
+        }
+
+        .education-content p {
+          font-size: 0.95em;
+        }
+
+        .controls {
+          flex-direction: column;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 20px;
+        }
+
+        #searchInput {
+          width: 100%;
+          max-width: 100%;
+          padding: 10px 15px;
+          font-size: 0.95em;
+        }
+
+        #downloadBtn {
+          padding: 10px 20px;
+          font-size: 0.95em;
+          width: 100%;
+          max-width: 200px;
+          text-align: center;
+        }
+
+        .timeline {
+          padding: 20px 0;
+          margin: 0 15px;
+        }
+
+        .timeline::before {
+          left: 30px;
+          transform: none;
+        }
+
+        .reset-filter-container {
+          text-align: left;
+          margin-left: 45px;
+        }
+
+        .timeline-entries {
+          position: relative;
+        }
+
+        .timeline-entry {
+          margin: 40px 0;
+          flex-direction: row;
+          justify-content: flex-start;
+          padding-left: 50px;
+          position: relative;
+        }
+
+        .marker {
+          position: absolute;
+          left: 18px;
+          margin-bottom: 0;
+        }
+
+        .marker-label {
+          position: static;
+          padding: 6px 12px;
+          font-size: 0.9em;
+          white-space: normal;
+          text-align: left;
+          box-shadow: none;
+        }
+
+        .tooltip {
+          display: none;
+        }
+
+        .details-panel {
+          top: 10px;
+          left: auto;
+          right: 10px;
+          transform: translateY(0);
+          width: auto;
+          max-width: 75%;
+          max-height: 80vh;
+          padding: 15px;
+          position: fixed;
+        }
+
+        .details-panel.active {
+          transform: translateY(0);
+        }
+
+        .details-content h2 {
+          font-size: 1.5em;
+        }
+
+        .details-content p,
+        .details-content ul {
+          font-size: 0.95em;
+        }
+
+        #skillsChart {
+          max-height: 200px;
+        }
+      }
+
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .container {
+          padding: 30px 15px;
+        }
+
+        h1 {
+          font-size: 2.2em;
+        }
+
+        .personal-details {
+          max-width: 80%;
+        }
+
+        .timeline::before {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .marker-label {
+          left: calc(50% + 30px);
+        }
+
+        .details-panel {
+          left: 30px;
+          width: 39%;
+          max-width: 39%;
+        }
+      }
+
+      /* ---------------------------------------------------------------- */
+      .locked-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1000;
+        pointer-events: none;
+      }
+
+      .blur-overlay {
+        width: 100%;
+        height: 100%;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        position: absolute;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        z-index: 1; /* Below canvas */
+      }
+
+      .static-noise {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0; /* Default hidden */
+        transition: opacity 0.5s ease;
+        pointer-events: none;
+        z-index: 2;
+        display: block; /* Ensure it’s always block, no need to toggle via JS */
+      }
+
+      .modal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(255, 255, 255, 0.95);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        z-index: 1001; /* Above canvas */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+        max-width: 400px;
+        width: 90%;
+      }
+
+      .locked .blur-overlay {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .locked .static-noise {
+        opacity: 0.7; /* Visible when locked */
+      }
+
+      .locked .modal {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+      }
+
+      /* @keyframes noise {
+        0% {
+          background-position: 0 0;
+        }
+        25% {
+          background-position: 25px 25px;
+        }
+        50% {
+          background-position: 50px 50px;
+        }
+        75% {
+          background-position: 75px 75px;
+        }
+        100% {
+          background-position: 0 0;
+        }
+      } */
+
+      .modal form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .dark-theme .modal {
+        background: rgba(40, 40, 40, 0.95);
+      }
+
+      .modal h2 {
+        margin: 0 0 20px;
+        font-size: 1.8em;
+        text-align: center;
+      }
+
+      .light-theme .modal h2 {
+        color: #8a9a5b;
+      }
+
+      .dark-theme .modal h2 {
+        color: #5a9bd4;
+      }
+
+      .modal input {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 2px solid #8a9a5b;
+        font-size: 1em;
+        outline: none;
+      }
+
+      .dark-theme .modal input {
+        border-color: #5a9bd4;
+        background: #282828;
+        color: #d4d4d4;
+      }
+
+      .modal button {
+        width: 100%;
+        padding: 10px;
+        background: #8a9a5b;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        transition: background-color 0.3s;
+      }
+
+      .dark-theme .modal button {
+        background: #5a9bd4;
+      }
+
+      .modal button:hover {
+        background: #7a8a4b;
+      }
+
+      .dark-theme .modal button:hover {
+        background: #4a8bc4;
+      }
+
+      .modal .error {
+        color: #e07a5f;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .dark-theme .modal .error {
+        color: #f4a261;
+      }
+
+      .modal .devTools {
+        color: #e0615f;
+        text-align: center;
+        margin-top: 10px;
+        display: none;
+      }
+
+      .dark-theme .modal .devTools {
+        color: #f46161;
+      }
+
+      /* Add locked class to body when content is locked */
+      body.locked {
+        overflow: hidden;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 20px 0;
+        margin-top: 40px;
+        border-top: 1px solid;
+      }
+
+      body.light-theme .footer {
+        border-top-color: #d4d4aa;
+        color: #4a3f35;
+      }
+
+      body.dark-theme .footer {
+        border-top-color: #3a3a3a;
+        color: #d4d4d4;
+      }
+
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+    </style>
+  </head>
+  <body>
+    <div class="locked-container">
+      <div class="blur-overlay"></div>
+      <canvas id="noiseCanvas" class="static-noise"></canvas>
+      <!-- Replace div with canvas -->
+      <div class="modal">
+        <h2>Enter Access Code</h2>
+        <form id="accessForm">
+          <input type="password" id="accessCode" placeholder="Enter code..." aria-label="Access code input" autocomplete="off" required />
+          <button type="submit" id="submitCode" aria-label="Submit access code">Submit</button>
+        </form>
+        <div class="error" id="errorMessage">Incorrect code. Please try again.</div>
+        <div class="devTools" id="devToolsMessage">Developer tools detected. Please close them to continue.</div>
+      </div>
+    </div>
+
+    <div class="theme-toggle">
+      <button id="themeSwitch" aria-label="Toggle theme">Dark 🌙</button>
+    </div>
+    <div class="container">
+      <h1>Professional Journey</h1>
+      <div class="personal-details-container" id="personalDetailsContainer"></div>
+      <div class="education-section" id="educationSection">
+        <h2>Education & Skills</h2>
+        <div class="education-tabs-container" id="educationTabsContainer">
+          <div class="education-tabs" id="educationTabs">
+            <div class="education-tab active" data-tab="education">Education</div>
+            <div class="education-tab" data-tab="skills">Skills</div>
+          </div>
+          <div class="education-content" id="educationContent"></div>
+        </div>
+      </div>
+      <div class="controls">
+        <input type="text" id="searchInput" placeholder="Search by title, company, or skill..." aria-label="Search timeline" />
+        <button id="downloadBtn" aria-label="Download resume as PDF">Download PDF</button>
+      </div>
+      <div class="timeline" id="timeline">
+        <div id="reset-filter-container" class="reset-filter-container">
+          <button type="button" class="reset-filter-btn" id="resetFilterBtn" aria-label="Reset filter to show all timeline entries">
+            Reset Filter
+          </button>
+        </div>
+        <div class="timeline-entries" id="timelineEntries"></div>
+      </div>
+      <div class="details-panel" id="detailsPanel">
+        <div class="details-content" id="detailsContent"></div>
+        <canvas id="skillsChart" aria-label="Skills proficiency chart"></canvas>
+      </div>
+
+      <!-- Existing content -->
+      <footer class="footer" id="footer">
+        <p>Total Unique Accesses: <span id="uniqueAccessCount">0</span> | Active Viewers: <span id="activeViewers">0</span></p>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const { jsPDF } = window.jspdf;
+        const personalDetailsContainer = document.getElementById("personalDetailsContainer");
+        const educationTabsDiv = document.getElementById("educationTabs");
+        const educationContentDiv = document.getElementById("educationContent");
+        const timelineContainer = document.getElementById("timelineEntries");
+        const detailsPanel = document.getElementById("detailsPanel");
+        const detailsContent = document.getElementById("detailsContent");
+        const themeSwitch = document.getElementById("themeSwitch");
+        const searchInput = document.getElementById("searchInput");
+        const downloadBtn = document.getElementById("downloadBtn");
+        const resetFilterBtn = document.getElementById("resetFilterBtn");
+        let activeMarker = null;
+        let timelineData = [];
+        let skillsChart = null;
+        let educationData = [];
+        let isFiltered = false;
+        let resumeData = {};
+        const accessForm = document.getElementById("accessForm");
+        const accessCodeInput = document.getElementById("accessCode");
+        const submitCodeBtn = document.getElementById("submitCode");
+        const errorMessage = document.getElementById("errorMessage");
+        const devToolsMessage = document.getElementById("devToolsMessage");
+        let securityHash = "";
+        let accessLogs = JSON.parse(localStorage.getItem("accessLogs")) || [];
+        let validSecurityHashes = [];
+
+        // Canvas noise logic
+        const canvas = document.getElementById("noiseCanvas");
+        const ctx = canvas.getContext("2d");
+        let animationFrameId = null;
+        const noiseFrames = [];
+        const frameCount = 5;
+        let currentFrame = 0;
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+
+        function generateNoiseFrame(width, height) {
+          const scaledWidth = Math.floor(width / 4); // 1/4 resolution
+          const scaledHeight = Math.floor(height / 4);
+          const imageData = ctx.createImageData(scaledWidth, scaledHeight);
+          const buffer32 = new Uint32Array(imageData.data.buffer);
+          for (let i = 0; i < buffer32.length; i++) {
+            buffer32[i] = (184 << 24) | ((Math.random() * 255) << 16) | ((Math.random() * 255) << 8) | (Math.random() * 255);
+          }
+          return imageData;
+        }
+
+        function initializeNoiseFrames() {
+          resizeCanvas();
+          for (let i = 0; i < frameCount; i++) {
+            noiseFrames[i] = generateNoiseFrame(canvas.width, canvas.height);
+          }
+        }
+
+        function animateNoise() {
+          if (document.body.classList.contains("locked")) {
+            const frame = noiseFrames[currentFrame];
+            ctx.putImageData(frame, 0, 0);
+            ctx.drawImage(canvas, 0, 0, frame.width, frame.height, 0, 0, canvas.width, canvas.height); // Scale up
+            currentFrame = (currentFrame + 1) % frameCount;
+          }
+          animationFrameId = setTimeout(() => requestAnimationFrame(animateNoise), 100); // 10fps
+        }
+
+        function startNoise() {
+          if (!animationFrameId) {
+            initializeNoiseFrames();
+            animationFrameId = requestAnimationFrame(animateNoise);
+          }
+        }
+
+        function stopNoise() {
+          if (animationFrameId) {
+            clearTimeout(animationFrameId);
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+          }
+        }
+
+        function updateNoiseVisibility() {
+          if (document.body.classList.contains("locked")) {
+            startNoise();
+          } else {
+            stopNoise();
+          }
+        }
+
+        // Initial setup
+        updateNoiseVisibility();
+
+        // Monitor class changes
+        const observer = new MutationObserver(() => updateNoiseVisibility());
+        observer.observe(document.body, { attributes: true, attributeFilter: ["class"] });
+
+        // Trigger on form submission
+        accessForm.addEventListener("submit", (e) => {
+          checkAccessCode(e);
+          updateNoiseVisibility();
+        });
+
+        // Define viewAccessLogs before updateFooterStats
+        const viewAccessLogs = () => {
+          const logs = JSON.parse(localStorage.getItem("accessLogs")) || [];
+          const formattedLogs = logs.map((log) => ({
+            code: log.code,
+            timestamp: log.timestamp,
+            userAgent: log.userAgent,
+            ip: log.ip,
+          }));
+          const uniqueAccessCount = new Set(logs.map((log) => `${log.timestamp}-${log.code}`)).size;
+          return { logs: formattedLogs, uniqueAccessCount };
+        };
+
+        const updateFooterStats = () => {
+          const { uniqueAccessCount } = viewAccessLogs();
+          const uniqueAccessCountSpan = document.getElementById("uniqueAccessCount");
+          const activeViewersSpan = document.getElementById("activeViewers");
+
+          if (uniqueAccessCountSpan) {
+            uniqueAccessCountSpan.textContent = uniqueAccessCount || 0;
+          }
+          if (activeViewersSpan) {
+            activeViewersSpan.textContent = "N/A";
+          }
+        };
+
+        const logAccess = (code) => {
+          const timestamp = new Date().toISOString();
+          const logEntry = {
+            code: code,
+            timestamp: timestamp,
+            userAgent: navigator.userAgent,
+            ip: "N/A",
+          };
+          accessLogs.push(logEntry);
+          localStorage.setItem("accessLogs", JSON.stringify(accessLogs));
+        };
+
+        const unlockPage = (enteredCode) => {
+          document.body.classList.remove("locked");
+          logAccess(enteredCode);
+          updateFooterStats();
+        };
+
+        const checkAccessCode = (e) => {
+          e.preventDefault();
+          const enteredCode = accessCodeInput.value.trim();
+          const enteredHash = simpleHash(enteredCode);
+
+          if (validSecurityHashes.includes(enteredHash)) {
+            unlockPage(enteredCode);
+          } else {
+            errorMessage.textContent = "Incorrect code. Please try again.";
+            errorMessage.style.display = "block";
+            accessCodeInput.value = "";
+            accessCodeInput.focus();
+            setTimeout(() => {
+              errorMessage.style.display = "none";
+            }, 3000);
+          }
+        };
+
+        accessCodeInput.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            checkAccessCode(e);
+          }
+        });
+
+        accessForm.addEventListener("submit", checkAccessCode);
+
+        const toggleTheme = () => {
+          const isDark = document.body.classList.toggle("dark-theme");
+          document.body.classList.toggle("light-theme", !isDark);
+          themeSwitch.textContent = isDark ? "Light ☀️" : "Dark 🌙";
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        };
+
+        const savedTheme = localStorage.getItem("theme") || "dark";
+        document.body.classList.add(`${savedTheme}-theme`);
+        themeSwitch.textContent = savedTheme === "dark" ? "Light ☀️" : "Dark 🌙";
+        themeSwitch.addEventListener("click", toggleTheme);
+
+        fetch("c8ba2e9b7b8e1c942f60f068.yaml")
+          .then((response) => {
+            if (!response.ok) throw new Error("Failed to load data.");
+            return response.text();
+          })
+          .then((yamlText) => {
+            resumeData = jsyaml.load(yamlText) || {};
+            const securityCodes = resumeData.security_codes || ["default123"];
+            validSecurityHashes = securityCodes.map((code) => simpleHash(code));
+
+            const personalDetailsDiv = document.createElement("div");
+            personalDetailsDiv.className = "personal-details";
+            personalDetailsDiv.innerHTML = `
+                <h2>Personal Details</h2>
+                <p><strong>Full Name:</strong> ${resumeData.personal_details?.full_name || "N/A"}</p>
+                <p><strong>Date of Birth:</strong> ${resumeData.personal_details?.date_of_birth || "N/A"}</p>
+                <p><strong>Contact Number:</strong> ${resumeData.personal_details?.contact_number || "N/A"}</p>
+                <p><strong>Email Address:</strong> ${resumeData.personal_details?.email_address || "N/A"}</p>
+                <p><strong>Linkedin:</strong> ${
+                  '<a href="' +
+                    resumeData.personal_details?.linkedin +
+                    '" target="_blank">' +
+                    resumeData.personal_details?.linkedin +
+                    "</a>" || "N/A"
+                }</p>
+              `;
+
+            const introductionDiv = document.createElement("div");
+            introductionDiv.className = "introduction";
+            introductionDiv.innerHTML = `
+                <h2>Introduction</h2>
+                <p>${resumeData.introduction || "No introduction available."}</p>
+              `;
+
+            personalDetailsContainer.appendChild(personalDetailsDiv);
+            personalDetailsContainer.appendChild(introductionDiv);
+
+            // ****************************************************************************** Education and Skills Tabs
+            const educationTabsDiv = document.getElementById("educationTabs");
+            const educationContentDiv = document.getElementById("educationContent");
+
+            if (resumeData.education) {
+              educationData = resumeData.education
+                .filter((edu) => edu.year || edu.current)
+                .map((edu) => ({
+                  ...edu,
+                  displayYear: edu.current ? "Current" : edu.year,
+                }))
+                .sort((a, b) => {
+                  if (a.displayYear === "Current") return -1;
+                  if (b.displayYear === "Current") return 1;
+                  return b.displayYear - a.displayYear || 0;
+                });
+            }
+
+            // Function to show Education content
+            const showEducationContent = () => {
+              if (educationData.length > 0) {
+                const initialEdu = educationData[0];
+                educationContentDiv.innerHTML = `
+            <div class="education-subtabs" id="educationSubtabs">
+              ${educationData
+                .map(
+                  (edu, index) => `
+                    <div class="education-tab ${index === 0 ? "active" : ""}" data-index="${index}">
+                      ${edu.displayYear || "N/A"}
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+            <div class="education-subcontent" id="educationSubcontent">
+              <h3>${initialEdu.course || "Unknown Course"} ${initialEdu.current ? "(Current)" : ""}</h3>
+              <p>${
+                (Array.isArray(initialEdu.details)
+                  ? initialEdu.details.join("<br>")
+                  : initialEdu.details || initialEdu.completion_date || "No details available") || "No information provided"
+              }</p>
+            </div>
+          `;
+
+                document.querySelectorAll(".education-subtabs .education-tab").forEach((tab) => {
+                  tab.addEventListener("click", () => {
+                    document.querySelectorAll(".education-subtabs .education-tab").forEach((t) => t.classList.remove("active"));
+                    tab.classList.add("active");
+                    const index = parseInt(tab.dataset.index);
+                    const selectedEdu = educationData[index] || {};
+                    document.getElementById("educationSubcontent").innerHTML = `
+                <h3>${selectedEdu.course || "Unknown Course"} ${selectedEdu.current ? "(Current)" : ""}</h3>
+                <p>${
+                  (Array.isArray(selectedEdu.details)
+                    ? selectedEdu.details.join("<br>")
+                    : selectedEdu.details || selectedEdu.completion_date || "No details available") || "No information provided"
+                }</p>
+              `;
+                  });
+                });
+              } else {
+                educationContentDiv.innerHTML = "<p>No education data available.</p>";
+              }
+            };
+
+            // Function to consolidate skills and show graph
+            const showSkillsContent = () => {
+              const skillsMap = new Map();
+              timelineData.forEach((entry) => {
+                (entry.skills || []).forEach((skill) => {
+                  const skillName = skill.name || skill || "Unknown Skill";
+                  const skillValue = skill.skillvalue || 50;
+                  if (!skillsMap.has(skillName) || skillsMap.get(skillName).skillvalue < skillValue) {
+                    skillsMap.set(skillName, { name: skillName, skillvalue: skillValue });
+                  }
+                });
+              });
+
+              const consolidatedSkills = Array.from(skillsMap.values());
+              educationContentDiv.innerHTML = `
+          <canvas id="consolidatedSkillsChart" aria-label="Consolidated Skills Proficiency Chart"></canvas>
+        `;
+
+              const ctx = document.getElementById("consolidatedSkillsChart").getContext("2d");
+              const chartBackgroundColor = document.body.classList.contains("light-theme") ? "#8a9a5b" : "#5a9bd4";
+              const chartBorderColor = document.body.classList.contains("light-theme") ? "#7a8a4b" : "#4a8bc4";
+
+              new Chart(ctx, {
+                type: "bar",
+                data: {
+                  labels: consolidatedSkills.map((skill) => skill.name),
+                  datasets: [
+                    {
+                      label: "Proficiency",
+                      data: consolidatedSkills.map((skill) => skill.skillvalue),
+                      backgroundColor: chartBackgroundColor,
+                      borderColor: chartBorderColor,
+                      borderWidth: 1,
+                    },
+                  ],
+                },
+                options: {
+                  scales: {
+                    y: { beginAtZero: true, max: 100, title: { display: true, text: "Proficiency (%)" } },
+                    x: { ticks: { rotation: 80, minRotation: 80, maxRotation: 90, padding: 10, font: { size: 10 } } },
+                  },
+                  plugins: { legend: { display: false } },
+                  maintainAspectRatio: false,
+                },
+              });
+            };
+
+            // Initial content (Education tab)
+            showEducationContent();
+
+            // Tab switching logic
+            document.querySelectorAll(".education-tabs .education-tab").forEach((tab) => {
+              tab.addEventListener("click", () => {
+                document.querySelectorAll(".education-tabs .education-tab").forEach((t) => t.classList.remove("active"));
+                tab.classList.add("active");
+                const tabName = tab.dataset.tab;
+                if (tabName === "education") {
+                  showEducationContent();
+                } else if (tabName === "skills") {
+                  showSkillsContent();
+                }
+              });
+            });
+
+            timelineData = (resumeData.timeline || []).map((entry) => ({
+              ...entry,
+              skills: Array.isArray(entry.skills)
+                ? entry.skills.map((skill) => ({
+                    name: skill.name || skill || "Unknown Skill",
+                    skillvalue: skill.skillvalue || 50,
+                  }))
+                : [],
+              duties: entry.duties || [],
+              description: entry.description || "No description provided",
+              references: entry.references || [],
+            }));
+            populateTimeline(timelineData);
+          })
+          .catch((error) => console.error("Error loading timeline:", error));
+
+        function simpleHash(str) {
+          let hash = 0;
+          for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+            hash = hash & hash; // Convert to 32bit integer
+          }
+          return hash.toString(16);
+        }
+
+        document.addEventListener("contextmenu", (e) => {
+          e.preventDefault();
+          return false;
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I") || (e.ctrlKey && e.key === "u")) {
+            e.preventDefault();
+            return false;
+          }
+        });
+
+        document.addEventListener("selectstart", (e) => e.preventDefault());
+
+        (function protectCode() {
+          const checkDevTools = () => {
+            // let _width = window.outerWidth - window.innerWidth;
+            // let _height = window.outerHeight - window.innerHeight;
+            // const isLocalhost = ["localhost", "127.0.0.1", "::1"].includes(window.location.hostname);
+            // if (!isLocalhost) {
+            //   //console.log("Running on localhost");
+            //   if (_width > 120 || _height > 120) {
+            //     console.log("Developer tools detected. Locking content.\r\nPlease close the developer tools to continue.");
+            //     if (!document.body.classList.contains("locked")) {
+            //       document.body.classList.add("locked");
+            //     }
+            //     devToolsMessage.style.display = "block";
+            //   } else {
+            //     devToolsMessage.style.display = "none";
+            //   }
+            // }
+          };
+          setInterval(checkDevTools, 1000);
+        })();
+
+        function populateTimeline(entries) {
+          timelineContainer.innerHTML = "";
+          entries.forEach((entry, index) => {
+            if (!entry) return;
+            const entryDiv = document.createElement("div");
+            entryDiv.className = "timeline-entry";
+            entryDiv.tabIndex = 0;
+
+            const marker = document.createElement("div");
+            marker.className = "marker";
+            marker.dataset.index = index;
+            marker.setAttribute(
+              "aria-label",
+              `${entry.title || "Unknown Title"} at ${entry.company || "Unknown Company"}, ${entry.date || "N/A"}`
+            );
+
+            const label = document.createElement("span");
+            label.className = "marker-label";
+            label.textContent = entry.date || "N/A";
+
+            const tooltip = document.createElement("div");
+            tooltip.className = "tooltip";
+            tooltip.textContent = `${entry.title || "Unknown Title"} at ${entry.company || "Unknown Company"}`;
+
+            entryDiv.appendChild(marker);
+            entryDiv.appendChild(label);
+            entryDiv.appendChild(tooltip);
+            timelineContainer.appendChild(entryDiv);
+
+            marker.addEventListener("mousemove", (e) => {
+              const rect = marker.getBoundingClientRect();
+              tooltip.style.left = `${rect.left + rect.width + 10}px`;
+              tooltip.style.top = `${rect.top - tooltip.offsetHeight / 2 + rect.height / 2}px`;
+            });
+
+            const showDetailsHandler = (e) => {
+              e.stopPropagation(); // Prevent click event from bubbling to document click listener
+              if (activeMarker === marker) {
+                hideDetailsPanel();
+              } else {
+                if (activeMarker) activeMarker.classList.remove("active");
+                const selectedEntry = timelineData[index] || {};
+                showDetails(selectedEntry);
+                marker.classList.add("active");
+                activeMarker = marker;
+                window.scrollTo({
+                  behavior: "smooth",
+                  top: marker.getBoundingClientRect().top + window.scrollY - window.innerHeight / 2 + marker.offsetHeight / 2,
+                });
+              }
+            };
+
+            marker.addEventListener("click", showDetailsHandler);
+            entryDiv.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                showDetailsHandler(e);
+              }
+            });
+          });
+        }
+
+        function hideDetailsPanel() {
+          detailsPanel.classList.remove("active");
+          if (activeMarker) {
+            activeMarker.classList.remove("active");
+            activeMarker = null;
+          }
+          if (typeof Chart !== "undefined" && skillsChart) {
+            skillsChart.destroy();
+            skillsChart = null;
+          }
+        }
+
+        function showDetails(entry) {
+          const skillsArray = entry.skills || [];
+          detailsContent.innerHTML = `
+        <h2>${entry.title || "Unknown Title"} at ${entry.company || "Unknown Company"}</h2>
+        <p><strong>Location:</strong> ${entry.location || "N/A"}</p>
+        <p><strong>Date:</strong> ${entry.date || "N/A"}</p>
+        <p>${entry.description || "No description provided"}</p>
+        <h3>Duties</h3>
+        ${
+          entry.duties.length > 0
+            ? entry.duties
+                .map(
+                  (duty) => `
+                    <p><strong>${duty.category || "No Category"}</strong></p>
+                    <ul>${(duty.items || []).map((item) => `<li>${item || "N/A"}</li>`).join("") || "<li>No duties listed</li>"}</ul>
+                  `
+                )
+                .join("")
+            : "<p>No duties available</p>"
+        }
+        <h3>Skills</h3>
+        <ul>${
+          skillsArray.length > 0
+            ? skillsArray
+                .map(
+                  (skill) =>
+                    `<li><span class="skill-tag" data-skill="${skill.name}" tabindex="0">${skill.name} (Proficiency: ${skill.skillvalue}/100)</span></li>`
+                )
+                .join("")
+            : "<li>No skills listed</li>"
+        }</ul>
+        ${entry.reason_for_leaving ? `<p><strong>Reason for Leaving:</strong> ${entry.reason_for_leaving}</p>` : ""}
+        <h3>References</h3>
+        ${
+          entry.references.length > 0
+            ? entry.references
+                .map(
+                  (ref) => `
+                    <p>${ref.name || "N/A"}, ${ref.title || "N/A"} at ${ref.company || "N/A"}<br>
+                    ${ref.email ? `Email: ${ref.email}<br>` : ""}Phone: ${ref.phone || "N/A"}</p>
+                  `
+                )
+                .join("")
+            : "<p>No references available</p>"
+        }
+        <button class="close-button" aria-label="Close details panel">Close</button>
+      `;
+          detailsPanel.classList.add("active");
+
+          document.querySelectorAll(".skill-tag").forEach((tag) => {
+            const filterHandler = (e) => {
+              e.stopPropagation(); // Prevent click from closing panel
+              const skill = tag.dataset.skill;
+              let skillsToFilter = [skill.split(":")[0].trim().toLowerCase()];
+
+              const filtered = timelineData.filter(
+                (e) =>
+                  e.skills &&
+                  e.skills.some((s) => {
+                    const skillName = (s.name || s).split(":")[0].trim().toLowerCase();
+                    return skillsToFilter.includes(skillName);
+                  })
+              );
+
+              isFiltered = true;
+              resetFilterBtn.classList.toggle("visible", isFiltered);
+              populateTimeline(filtered);
+            };
+            tag.addEventListener("click", filterHandler);
+            tag.addEventListener("keydown", (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                filterHandler(e);
+              }
+            });
+          });
+
+          if (typeof Chart !== "undefined" && skillsChart) skillsChart.destroy();
+          const ctx = document.getElementById("skillsChart").getContext("2d");
+          const chartBackgroundColor = document.body.classList.contains("light-theme") ? "#8a9a5b" : "#5a9bd4";
+          const chartBorderColor = document.body.classList.contains("light-theme") ? "#7a8a4b" : "#4a8bc4";
+          skillsChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: skillsArray.map((skill) => skill.name),
+              datasets: [
+                {
+                  label: "Proficiency",
+                  data: skillsArray.map((skill) => skill.skillvalue || 50),
+                  backgroundColor: chartBackgroundColor,
+                  borderColor: chartBorderColor,
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: { beginAtZero: true, max: 100, title: { display: true, text: "Proficiency (%)" } },
+                x: { ticks: { rotation: 90, minRotation: 90, maxRotation: 90, padding: 10, font: { size: 10 } } },
+              },
+              plugins: { legend: { display: false } },
+              maintainAspectRatio: false,
+            },
+          });
+
+          // Add close button event listener
+          const closeButton = document.querySelector(".close-button");
+          if (closeButton) {
+            closeButton.addEventListener("click", (e) => {
+              e.stopPropagation(); // Prevent click from bubbling
+              hideDetailsPanel();
+            });
+          }
+        }
+
+        // Add click-outside-to-close functionality
+        document.addEventListener("click", (e) => {
+          if (
+            detailsPanel.classList.contains("active") &&
+            !detailsPanel.contains(e.target) &&
+            e.target.closest(".timeline-entry") === null
+          ) {
+            hideDetailsPanel();
+          }
+        });
+
+        resetFilterBtn.addEventListener("click", () => {
+          isFiltered = false;
+          resetFilterBtn.classList.toggle("visible", isFiltered);
+          populateTimeline(timelineData);
+        });
+
+        searchInput.addEventListener("input", (e) => {
+          const query = e.target.value.toLowerCase();
+          const filtered = timelineData.filter(
+            (e) =>
+              (e.title && e.title.toLowerCase().includes(query)) ||
+              (e.company && e.company.toLowerCase().includes(query)) ||
+              (e.skills && e.skills.some((skill) => skill.name.toLowerCase().includes(query)))
+          );
+          isFiltered = query.length > 0;
+          resetFilterBtn.classList.toggle("visible", isFiltered);
+          populateTimeline(filtered);
+        });
+
+        downloadBtn.addEventListener("click", () => {
+          const doc = new jsPDF();
+          const pageHeight = doc.internal.pageSize.height;
+          const pageWidth = doc.internal.pageSize.width;
+          const leftMargin = 10;
+          const rightMargin = 10;
+          const maxWidth = pageWidth - leftMargin - rightMargin;
+          let yOffset = 10;
+          const lineHeight = 5;
+          const pageBottomMargin = 10;
+
+          const checkPageBreak = (requiredSpace) => {
+            if (yOffset + requiredSpace > pageHeight - pageBottomMargin) {
+              doc.addPage();
+              yOffset = 10;
+              return true;
+            }
+            return false;
+          };
+
+          const addText = (text, x, y, fontSize, isBold = false, textMaxWidth) => {
+            doc.setFontSize(fontSize);
+            doc.setFont("helvetica", isBold ? "bold" : "normal");
+            const lines = doc.splitTextToSize(text || "N/A", textMaxWidth);
+            checkPageBreak(lines.length * lineHeight);
+            doc.text(lines, x, y);
+            return lines.length * lineHeight;
+          };
+
+          const addSectionHeading = (text) => {
+            checkPageBreak(12);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            const textWidth = doc.getTextWidth(text);
+            doc.text(text, leftMargin, yOffset);
+            yOffset += 2;
+            doc.setLineWidth(0.5);
+            doc.line(leftMargin, yOffset, leftMargin + textWidth, yOffset);
+            yOffset += 7;
+          };
+
+          const addBulletList = (items, indent = leftMargin + 5, bullet = "• ") => {
+            (items || []).forEach((item) => {
+              if (!item) return;
+              checkPageBreak(lineHeight);
+              doc.setFontSize(10);
+              doc.setFont("helvetica", "normal");
+              const lines = doc.splitTextToSize(bullet + item, maxWidth - (indent - leftMargin));
+              doc.text(lines, indent, yOffset);
+              yOffset += lines.length * lineHeight;
+            });
+          };
+
+          doc.setFontSize(14);
+          doc.setFont("helvetica", "bold");
+          doc.text("CURRICULUM VITAE", pageWidth / 2, yOffset, { align: "center" });
+          yOffset += 6;
+
+          doc.setFontSize(12);
+          doc.setFont("helvetica", "normal");
+          doc.text(resumeData.personal_details?.full_name || "CHRISTOPHER VISSER", pageWidth / 2, yOffset, {
+            align: "center",
+          });
+          yOffset += 8;
+
+          addSectionHeading("PERSONAL DETAILS");
+          addText(`Full Name: ${resumeData.personal_details?.full_name || "N/A"}`, leftMargin, yOffset, 10, false, maxWidth);
+          yOffset += lineHeight;
+          addText(
+            `Date of Birth: ${resumeData.personal_details?.date_of_birth || "Refer to website for details...."}`,
+            leftMargin,
+            yOffset,
+            10,
+            false,
+            maxWidth
+          );
+          yOffset += lineHeight;
+          addText(
+            `Contact Number: ${resumeData.personal_details.contact_number || "Refer to website for details...."}`,
+            leftMargin,
+            yOffset,
+            10,
+            false,
+            maxWidth
+          );
+          yOffset += lineHeight;
+          addText(
+            `Email Address: ${resumeData.personal_details.email_address || "Refer to website for details...."}`,
+            leftMargin,
+            yOffset,
+            10,
+            false,
+            maxWidth
+          );
+          yOffset += lineHeight;
+          addText(
+            `Linkedin: ${resumeData.personal_details.linkedin || "Refer to website for details...."}`,
+            leftMargin,
+            yOffset,
+            10,
+            false,
+            maxWidth
+          );
+          yOffset += 7;
+
+          addSectionHeading("INTRODUCTION");
+          addText(resumeData.introduction || "No introduction provided.", leftMargin, yOffset, 10, false, maxWidth);
+          yOffset += 20;
+
+          addSectionHeading("EDUCATION");
+          (resumeData.education || []).forEach((edu) => {
+            const yearDisplay = edu.current ? "Current" : edu.year || "N/A";
+            const courseText = `${edu.course || "Unknown Course"} (${yearDisplay})`;
+            addText(courseText, leftMargin, yOffset, 11, true, maxWidth);
+            yOffset += lineHeight;
+
+            const details = Array.isArray(edu.details) ? edu.details : [edu.details || edu.completion_date || "No details"];
+            addBulletList(details, leftMargin + 5);
+            yOffset += 4;
+          });
+          yOffset += 4;
+
+          addSectionHeading("SKILLS");
+          const skills = (resumeData.skills || []).map((skill) => skill.name || skill) || ["No skills listed"];
+          addBulletList(skills, leftMargin + 5);
+          yOffset += 8;
+
+          addSectionHeading("EMPLOYMENT HISTORY");
+          (resumeData.timeline || []).forEach((entry, index) => {
+            let entryHeight = 0;
+            entryHeight += lineHeight;
+            entryHeight += lineHeight;
+            entryHeight += lineHeight;
+            entryHeight += lineHeight;
+            entryHeight += 6;
+
+            if (entry.duties && entry.duties.length > 0) {
+              entryHeight += lineHeight;
+              entry.duties.forEach((duty) => {
+                if (duty.category) {
+                  entryHeight += lineHeight;
+                }
+                const items = duty.items || [duty];
+                items.forEach((item) => {
+                  if (item) {
+                    const lines = doc.splitTextToSize("• " + item, maxWidth - (leftMargin + 10 - leftMargin));
+                    entryHeight += lines.length * lineHeight;
+                  }
+                });
+                entryHeight += 4;
+              });
+            }
+
+            if (entry.reason_for_leaving) {
+              const reasonLines = doc.splitTextToSize(`Reason for Leaving: ${entry.reason_for_leaving}`, maxWidth);
+              entryHeight += reasonLines.length * lineHeight;
+              entryHeight += lineHeight + 4;
+            }
+            entryHeight += 4;
+
+            checkPageBreak(entryHeight);
+
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text(index === 0 ? "Current" : "Previous", leftMargin, yOffset);
+            yOffset += 5;
+
+            addText(`Name of Employer: ${entry.company || "N/A"}`, leftMargin, yOffset, 11, true, maxWidth);
+            yOffset += lineHeight;
+            addText(`Period of Employment: ${entry.date || "N/A"}`, leftMargin, yOffset, 10, false, maxWidth);
+            yOffset += lineHeight;
+            addText(`Job Title: ${entry.title || "N/A"}`, leftMargin, yOffset, 10, false, maxWidth);
+            yOffset += 6;
+
+            if (entry.duties && entry.duties.length > 0) {
+              addText("Duties:", leftMargin, yOffset, 11, true, maxWidth);
+              yOffset += lineHeight;
+
+              entry.duties.forEach((duty) => {
+                if (duty.category) {
+                  addText(`${duty.category}:`, leftMargin + 5, yOffset, 10, true, maxWidth);
+                  yOffset += lineHeight;
+                }
+                addBulletList(duty.items || [duty], leftMargin + 10);
+              });
+              yOffset += 4;
+            }
+
+            if (entry.reason_for_leaving) {
+              addText(`Reason for Leaving: ${entry.reason_for_leaving || "N/A"}`, leftMargin, yOffset, 10, false, maxWidth);
+              yOffset += lineHeight + 4;
+            }
+
+            yOffset += 4;
+          });
+
+          doc.save("Curriculum-Vitae-Chris-Visser-2025.pdf");
+        });
+
+        document.body.classList.add("locked");
+        updateFooterStats();
+      });
+
+      window.print = function () {
+        return false;
+      };
+    </script>
+  </body>
+</html>

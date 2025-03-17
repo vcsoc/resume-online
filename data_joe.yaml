@@ -1,0 +1,240 @@
+security_codes:
+  - "xyz789abc123def456"  # Fake Code 1
+  - "jsoap123!@"         # Fake Code 2
+  - "pass789"            # Fake Code 3
+
+personal_details:
+  full_name: "Joe Soap"
+  date_of_birth: "March 15, 1985"
+  contact_number: "+1 555 123 4567"
+  email_address: "joesoap@example.com"
+  linkedin: "https://linkedin.com/in/joesoap"
+
+introduction: |
+  Enthusiastic IT enthusiast with over a decade of experience in software development and system administration. Passionate about exploring new technologies and collaborating with teams to deliver innovative solutions. In my free time, I enjoy hiking, video gaming, and experimenting with DIY electronics.
+
+education:
+  - type: "Secondary"
+    course: "Springfield High School"
+    completion_date: "2003 – Grade 12, Diploma"
+    year: 2003
+  - type: "Tertiary"
+    current: true
+    course: "Self Study Certifications in Progress for 2025"
+    details:
+      - "AWS Certified Solutions Architect"
+      - "Google Cloud Professional DevOps Engineer"
+      - "Cisco CCNA Certification"
+      - "Python for Data Science"
+      - "Docker Deep Dive"
+  - type: "Tertiary"
+    year: 2020
+    course: "Bachelor of Computer Science"
+    details: "Online Degree from Tech University"
+  - type: "Tertiary"
+    year: 2016
+    course: "CompTIA Network+ Certification"
+    details: "Self Study"
+  - type: "Tertiary"
+    year: 2014
+    course: "Associate Degree in IT"
+    details: "Community College"
+
+skills:
+  - name: "System Administration"
+    skillvalue: 60
+  - name: "Python, Java, C++"
+    skillvalue: 70
+  - name: "AWS, Docker, Kubernetes"
+    skillvalue: 50
+  - name: "HTML, CSS, JavaScript"
+    skillvalue: 60
+  - name: "MySQL, PostgreSQL"
+    skillvalue: 55
+
+timeline:
+  - title: "Cloud Engineer"
+    company: "CloudTech Innovations"
+    location: "New York, USA"
+    date: "Jan. 2023 - Present"
+    description: |
+      Responsible for designing and managing cloud infrastructure solutions using AWS. Collaborate with development teams to optimize deployment pipelines and ensure system reliability. Focus on cost management and scalability for enterprise clients.
+    duties:
+      - category: "Responsibilities"
+        items:
+          - "Design and deploy AWS-based cloud solutions."
+          - "Monitor system performance and optimize costs."
+          - "Collaborate with developers on CI/CD pipeline improvements."
+          - "Ensure high availability and disaster recovery plans."
+          - "Provide technical support for cloud-related issues."
+      - category: "DevOps"
+        items:
+          - "Maintain Docker containers and Kubernetes clusters."
+          - "Automate deployment processes using Jenkins."
+          - "Analyze logs for system troubleshooting."
+      - category: "Architecture"
+        items:
+          - "Evaluate client needs for cloud migration strategies."
+          - "Recommend scalable infrastructure designs."
+    skills:
+      - name: "AWS"
+        skillvalue: 75
+      - name: "Docker"
+        skillvalue: 65
+      - name: "Kubernetes"
+        skillvalue: 60
+      - name: "Python"
+        skillvalue: 70
+    reason_for_leaving: null
+    references:
+      - name: "Jane Doe"
+        title: "IT Manager"
+        company: "CloudTech Innovations"
+        phone: "+1 555 987 6543"
+
+  - title: "Software Developer"
+    company: "TechTrend Solutions"
+    location: "Chicago, USA"
+    date: "Jun. 2020 - Dec. 2022"
+    description: |
+      Developed web applications using Python and JavaScript frameworks. Worked on backend systems with MySQL databases and integrated APIs for client projects. Participated in Agile sprints to deliver features on time.
+    duties:
+      - category: "Development"
+        items:
+          - "Build web applications using Python and Django."
+          - "Develop RESTful APIs for client integration."
+          - "Manage MySQL database schemas and queries."
+          - "Write unit tests for code quality assurance."
+      - category: "Team Collaboration"
+        items:
+          - "Participate in daily stand-up meetings."
+          - "Review peer code for best practices."
+          - "Assist in sprint planning and backlog refinement."
+      - category: "Maintenance"
+        items:
+          - "Debug and resolve production issues."
+          - "Update documentation for deployed features."
+    skills:
+      - name: "Python"
+        skillvalue: 80
+      - name: "JavaScript"
+        skillvalue: 70
+      - name: "Django"
+        skillvalue: 65
+      - name: "MySQL"
+        skillvalue: 60
+    reason_for_leaving: "Sought a role with more cloud focus."
+    references:
+      - name: "John Smith"
+      title: "Senior Developer"
+      company: "TechTrend Solutions"
+      phone: "+1 555 456 7890"
+
+  - title: "Systems Administrator"
+    company: "DataCore Enterprises"
+    location: "Austin, USA"
+    date: "Mar. 2018 - May 2020"
+    description: |
+      Managed server infrastructure and network security for a mid-sized company. Implemented backup solutions and monitored system performance. Provided end-user support and trained staff on new tools.
+    duties:
+      - category: "Administration"
+        items:
+          - "Maintain server uptime and performance."
+          - "Configure network security protocols."
+          - "Implement automated backup systems."
+          - "Train staff on IT tools and procedures."
+      - category: "Support"
+        items:
+          - "Resolve hardware and software issues."
+          - "Assist with user account management."
+      - category: "Monitoring"
+        items:
+          - "Monitor system logs for anomalies."
+          - "Generate performance reports for management."
+    skills:
+      - name: "System Administration"
+        skillvalue: 70
+      - name: "Network Security"
+        skillvalue: 60
+      - name: "Backup Solutions"
+        skillvalue: 65
+      - name: "Linux"
+        skillvalue: 50
+    reason_for_leaving: "Pursued a development-focused career path."
+    references:
+      - name: "Emily Johnson"
+      title: "IT Director"
+      company: "DataCore Enterprises"
+      phone: "+1 555 321 6549"
+
+  - title: "Junior Developer"
+    company: "CodeCraft Studios"
+    location: "Seattle, USA"
+    date: "Sep. 2016 - Feb. 2018"
+    description: |
+      Assisted in developing mobile and web applications using Java and HTML/CSS. Worked under senior developers to learn best practices and contribute to small projects. Focused on front-end development and UI design.
+    duties:
+      - category: "Development"
+        items:
+          - "Assist in coding mobile apps with Java."
+          - "Create responsive web designs with HTML/CSS."
+          - "Collaborate on UI/UX improvements."
+          - "Test applications for bugs and usability."
+      - category: "Learning"
+        items:
+          - "Shadow senior developers for mentorship."
+          - "Study new programming techniques."
+      - category: "Support"
+        items:
+          - "Document code changes and features."
+    skills:
+      - name: "Java"
+        skillvalue: 60
+      - name: "HTML/CSS"
+        skillvalue: 70
+      - name: "UI/UX Design"
+        skillvalue: 50
+      - name: "Mobile Development"
+        skillvalue: 55
+    reason_for_leaving: "Advanced to a higher-level role."
+    references:
+      - name: "Michael Brown"
+      title: "Lead Developer"
+      company: "CodeCraft Studios"
+      phone: "+1 555 789 1234"
+
+  - title: "IT Support Specialist"
+    company: "TechSupport Inc."
+    location: "Denver, USA"
+    date: "Jun. 2015 - Aug. 2016"
+    description: |
+      Provided technical support for hardware and software issues. Installed and configured workstations and assisted with network troubleshooting. Trained new employees on company IT systems.
+    duties:
+      - category: "Support"
+        items:
+          - "Troubleshoot hardware and software problems."
+          - "Install and configure workstations."
+          - "Assist with network connectivity issues."
+          - "Train new hires on IT systems."
+      - category: "Maintenance"
+        items:
+          - "Update software on company devices."
+          - "Perform routine system checks."
+      - category: "Documentation"
+        items:
+          - "Log support tickets and resolutions."
+    skills:
+      - name: "Technical Support"
+        skillvalue: 70
+      - name: "Hardware Installation"
+        skillvalue: 65
+      - name: "Network Troubleshooting"
+        skillvalue: 60
+      - name: "Training"
+        skillvalue: 50
+    reason_for_leaving: "Moved to a development role for career growth."
+    references:
+      - name: "Sarah Davis"
+      title: "Support Manager"
+      company: "TechSupport Inc."
+      phone: "+1 555 654 3210"
