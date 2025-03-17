@@ -6,7 +6,7 @@ security_codes:
 personal_details:
   full_name: "Joe Soap"
   date_of_birth: "March 15, 1985"
-  contact_number: "+1 555 123 4567"
+  contact_number: "+1 007 123 4567"
   email_address: "joesoap@example.com"
   linkedin: "https://linkedin.com/in/joesoap"
 
@@ -126,9 +126,9 @@ timeline:
     reason_for_leaving: "Sought a role with more cloud focus."
     references:
       - name: "John Smith"
-      title: "Senior Developer"
-      company: "TechTrend Solutions"
-      phone: "+1 555 456 7890"
+        title: "Senior Developer"
+        company: "TechTrend Solutions"
+        phone: "+1 555 456 7890"
 
   - title: "Systems Administrator"
     company: "DataCore Enterprises"
@@ -163,9 +163,9 @@ timeline:
     reason_for_leaving: "Pursued a development-focused career path."
     references:
       - name: "Emily Johnson"
-      title: "IT Director"
-      company: "DataCore Enterprises"
-      phone: "+1 555 321 6549"
+        title: "IT Director"
+        company: "DataCore Enterprises"
+        phone: "+1 555 321 6549"
 
   - title: "Junior Developer"
     company: "CodeCraft Studios"
@@ -199,9 +199,9 @@ timeline:
     reason_for_leaving: "Advanced to a higher-level role."
     references:
       - name: "Michael Brown"
-      title: "Lead Developer"
-      company: "CodeCraft Studios"
-      phone: "+1 555 789 1234"
+        title: "Lead Developer"
+        company: "CodeCraft Studios"
+        phone: "+1 555 789 1234"
 
   - title: "IT Support Specialist"
     company: "TechSupport Inc."
@@ -235,6 +235,6 @@ timeline:
     reason_for_leaving: "Moved to a development role for career growth."
     references:
       - name: "Sarah Davis"
-      title: "Support Manager"
-      company: "TechSupport Inc."
-      phone: "+1 555 654 3210"
+        title: "Support Manager"
+        company: "TechSupport Inc."
+        phone: "+1 555 654 3210"

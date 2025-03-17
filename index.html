@@ -1378,7 +1378,7 @@
         themeSwitch.textContent = savedTheme === "dark" ? "Light ☀️" : "Dark 🌙";
         themeSwitch.addEventListener("click", toggleTheme);
 
-        fetch("c8ba2e9b7b8e1c942f60f068.yaml")
+        fetch("timeline.yaml")
           .then((response) => {
             if (!response.ok) throw new Error("Failed to load data.");
             return response.text();
@@ -1884,7 +1884,7 @@
 
           doc.setFontSize(12);
           doc.setFont("helvetica", "normal");
-          doc.text(resumeData.personal_details?.full_name || "CHRISTOPHER VISSER", pageWidth / 2, yOffset, {
+          doc.text(resumeData.personal_details?.full_name || "<YOUR NAME>", pageWidth / 2, yOffset, {
             align: "center",
           });
           yOffset += 8;
@@ -2020,7 +2020,7 @@
             yOffset += 4;
           });
 
-          doc.save("Curriculum-Vitae-Chris-Visser-2025.pdf");
+          doc.save("Curriculum-Vitae-<YOUR NAME>-2025.pdf");
         });
 
         document.body.classList.add("locked");

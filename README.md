@@ -11,7 +11,7 @@ To run this website locally, you need:
 ## Setup and Running Instructions
 
 ### Step 1: Extract the Folder
-- Unzip the `resume` folder to a location on your laptop (e.g., Desktop or Documents).
+- Unzip the `resume-online` folder to a location on your laptop (e.g., Desktop or Documents).
 
 ### Step 2: Open the Terminal
 - **Windows**: Open Command Prompt (cmd) or PowerShell.
@@ -20,9 +20,9 @@ To run this website locally, you need:
   - Press `Cmd + Space`, type `Terminal`, and press Enter.
 
 ### Step 3: Navigate to the Project Directory
-- In the terminal, navigate to the `resume` folder using the `cd` command.
-  - Example (Windows): `cd C:\Users\YourName\Desktop\resume`
-  - Example (Mac): `cd ~/Desktop/resume`
+- In the terminal, navigate to the `resume-online` folder using the `cd` command.
+  - Example (Windows): `cd C:\Users\YourName\Desktop\resume-online`
+  - Example (Mac): `cd ~/Desktop/resume-online`
 
 ### Step 4: Start the Local Server
 - Run the following command to start a local server:
@@ -42,7 +42,7 @@ Local: http://localhost:3000
 - Ensure you are running the site using the local server (`npm start`) and not by double-clicking `index.html`. Opening the file directly (`file://`) may cause issues with loading the `timeline.yaml` file.
 - **Error: "npm start" not working**:
 - Make sure Node.js is installed. Run `node -v` in the terminal to check. If not installed, download and install it from [https://nodejs.org/](https://nodejs.org/).
-- Ensure you are in the `resume-timeline` directory when running `npm start`.
+- Ensure you are in the `resume-online` directory when running `npm start`.
 - **Fonts not loading**:
 - The site uses Google Fonts (Poppins), which requires an internet connection. If you are offline, the fonts will fall back to Arial.
 
